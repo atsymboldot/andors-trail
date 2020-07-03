@@ -78,7 +78,7 @@ public final class ConversationActivity
 
 		setContentView(R.layout.conversation);
 
-		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && !app.getPreferences().quickLeaveDialog) {
 			setFinishOnTouchOutside(false);
 		}
 

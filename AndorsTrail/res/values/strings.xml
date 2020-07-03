@@ -305,6 +305,8 @@
 	<string name="preferences_dialog_confirmrest">Gives a question about whether you want to rest when entering a bed. Otherwise, you will always automatically rest.</string>
 	<string name="preferences_dialog_confirmattack_title">Confirm attack</string>
 	<string name="preferences_dialog_confirmattack">Enables the \'Do you want to attack..?\' dialog box when attacking a monster.</string>
+	<string name="preferences_dialog_quickleavedialog_title">Quick leave dialog</string>
+	<string name="preferences_dialog_quickleavedialog">Allows you to tap outside of a dialog box to close the dialog.</string>
 	<string name="preferences_dialog_monsterloot_title">Display monster loot</string>
 	<string name="preferences_dialog_monsterloot">Choose how you want to show the results of a fight to be shown (gold, experience, items).</string>
 	<string name="preferences_combat_category">Combat</string>

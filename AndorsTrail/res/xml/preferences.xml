@@ -44,6 +44,11 @@
 			android:defaultValue="true"
 			android:summary="@string/preferences_dialog_confirmattack"
 			android:key="confirm_attack" />
+		<CheckBoxPreference
+			android:title="@string/preferences_dialog_quickleavedialog_title"
+			android:defaultValue="false"
+			android:summary="@string/preferences_dialog_quickleavedialog"
+			android:key="quick_leave_dialog" />
 		<com.gpl.rpg.AndorsTrail.view.CustomListPreference
 			android:title="@string/preferences_dialog_monsterloot_title"
 			android:summary="@string/preferences_dialog_monsterloot"
