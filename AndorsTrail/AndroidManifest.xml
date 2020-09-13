@@ -9,7 +9,7 @@
 	>
 	<uses-sdk 
 		android:minSdkVersion="4"
-		android:targetSdkVersion="29"
+		android:targetSdkVersion="30"
 		/>
 	
 	<supports-screens
@@ -31,7 +31,8 @@
 		android:description="@string/app_description"
         android:allowBackup="true"
         android:theme="@style/AndorsTrailTheme_Blue"
-		android:requestLegacyExternalStorage="true"
+		android:hasFragileUserData="true"
+		android:preserveLegacyExternalStorage="true"
 		>
 		<activity 
 		    android:name=".activity.StartScreenActivity" 
@@ -62,6 +63,16 @@
 		<activity android:name=".activity.BulkSelectionInterface" android:theme="@style/AndorsTrailDialogTheme_Blue" />
 		<activity android:name=".activity.SkillInfoActivity" android:theme="@style/AndorsTrailDialogTheme_Blue" />
 		<activity android:name=".activity.DisplayWorldMapActivity" />
+
+        <provider
+        android:name="android.support.v4.content.FileProvider"
+        android:authorities="com.gpl.rpg.AndorsTrail.fileprovider"
+        android:grantUriPermissions="true"
+        android:exported="false">
+        <meta-data
+            android:name="android.support.FILE_PROVIDER_PATHS"
+            android:resource="@xml/fileprovider" />
+		</provider>
 	</application>
 	
 </manifest>

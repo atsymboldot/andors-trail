@@ -70,9 +70,9 @@ public final class LoadSaveActivity extends AndorsTrailBaseActivity implements O
 		ViewGroup newSlotContainer = (ViewGroup) findViewById(R.id.loadsave_save_to_new_slot_container);
 		Button createNewSlot = (Button) findViewById(R.id.loadsave_save_to_new_slot);
 
-		addSavegameSlotButtons(slotList, params, Savegames.getUsedSavegameSlots());
+		addSavegameSlotButtons(slotList, params, Savegames.getUsedSavegameSlots(this));
 
-		checkAndRequestPermissions();
+		// checkAndRequestPermissions();
 		
 		if (!isLoading) {
 			createNewSlot.setTag(SLOT_NUMBER_CREATE_NEW_SLOT);
@@ -137,7 +137,7 @@ public final class LoadSaveActivity extends AndorsTrailBaseActivity implements O
 
 	public void loadsave(int slot) {
 		if (slot == SLOT_NUMBER_CREATE_NEW_SLOT) {
-			List<Integer> usedSlots = Savegames.getUsedSavegameSlots();
+			List<Integer> usedSlots = Savegames.getUsedSavegameSlots(this);
 			if (usedSlots.isEmpty()) slot = SLOT_NUMBER_FIRST_SLOT;
 			else slot = Collections.max(usedSlots) + 1;
 		}
@@ -152,7 +152,7 @@ public final class LoadSaveActivity extends AndorsTrailBaseActivity implements O
 	private String getConfirmOverwriteQuestion(int slot) {
 		if (isLoading) return null;
 		if (slot == SLOT_NUMBER_CREATE_NEW_SLOT) return null;					// if we're creating a new slot
-        if (!Savegames.getSlotFile(slot).exists()) return null;
+        if (!Savegames.getSlotFile(slot, this).exists()) return null;
 
 		if (preferences.displayOverwriteSavegame == AndorsTrailPreferences.CONFIRM_OVERWRITE_SAVEGAME_ALWAYS) {
 			return getString(R.string.loadsave_save_overwrite_confirmation_all);
@@ -192,7 +192,7 @@ public final class LoadSaveActivity extends AndorsTrailBaseActivity implements O
 
 
 		if (isLoading) {
-			if(!Savegames.getSlotFile(slot).exists()) {
+			if(!Savegames.getSlotFile(slot, this).exists()) {
 				showErrorLoadingEmptySlot();
 			} else {
 				final FileHeader header = Savegames.quickload(this, slot);

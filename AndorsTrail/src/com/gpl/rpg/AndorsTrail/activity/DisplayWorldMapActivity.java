@@ -1,6 +1,7 @@
 package com.gpl.rpg.AndorsTrail.activity;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import com.gpl.rpg.AndorsTrail.AndorsTrailApplication;
 import com.gpl.rpg.AndorsTrail.R;
@@ -15,7 +16,9 @@ import com.gpl.rpg.AndorsTrail.util.ThemeHelper;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.FileProvider;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -85,7 +88,7 @@ public final class DisplayWorldMapActivity extends AndorsTrailBaseActivity {
 	Coord offsetWorldmapTo;
 	@SuppressLint("NewApi")
 	private void update() {
-		File worldmap = WorldMapController.getCombinedWorldMapFile(worldMapSegmentName);
+		File worldmap = WorldMapController.getCombinedWorldMapFile(this, worldMapSegmentName);
 
 		if (!worldmap.exists()) {
 			Toast.makeText(this, getResources().getString(R.string.menu_button_worldmap_failed), Toast.LENGTH_LONG).show();
@@ -104,14 +107,15 @@ public final class DisplayWorldMapActivity extends AndorsTrailBaseActivity {
 			PredefinedMap predefinedMap = world.maps.findPredefinedMap(map.mapName);
 			if (predefinedMap == null) continue;
 			if (!predefinedMap.visited) continue;
-			if (!WorldMapController.fileForMapExists(predefinedMap)) continue;
+			if (!WorldMapController.fileForMapExists(this, predefinedMap)) continue;
 
 			offsetWorldmapTo.x = Math.min(offsetWorldmapTo.x, map.worldPosition.x);
 			offsetWorldmapTo.y = Math.min(offsetWorldmapTo.y, map.worldPosition.y);
 		}
-		
-
-		String url = "file://" + worldmap.getAbsolutePath() + '?'
+	//	String url = "content://com.gpl.rpg.AndorsTrail.fileprovider/worldmap" + worldmap.getAbsolutePath() + '?'
+	// FileProvider.getUri
+		Uri uri = FileProvider.getUriForFile(this, "com.gpl.rpg.AndorsTrail.fileprovider", worldmap);
+		String url = uri.toString() + '?'
 				+ (world.model.player.position.x + map.worldPosition.x) * WorldMapController.WORLDMAP_DISPLAY_TILESIZE
 				+ ','
 				+ (world.model.player.position.y + map.worldPosition.y-1) * WorldMapController.WORLDMAP_DISPLAY_TILESIZE;

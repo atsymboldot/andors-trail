@@ -190,7 +190,7 @@ public class StartScreenActivity_MainMenu extends Fragment {
 			});
 		}
 
-		boolean hasSavegames = !Savegames.getUsedSavegameSlots().isEmpty();
+		boolean hasSavegames = !Savegames.getUsedSavegameSlots(getActivity()).isEmpty();
 		startscreen_load.setEnabled(hasSavegames);
 	}
 
@@ -199,13 +199,29 @@ public class StartScreenActivity_MainMenu extends Fragment {
 
 	@TargetApi(23)
 	public static void checkAndRequestPermissions(final Activity activity) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-			if (activity.getApplicationContext().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-				activity.requestPermissions(new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, READ_EXTERNAL_STORAGE_REQUEST);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
+			String info = "";
+			if (activity.getApplicationContext().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+				&& activity.getApplicationContext().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+				info = "RW permission on external folder exists";
+				if (Savegames.getUsedSavegameSlots(activity.getApplicationContext()).size() == 0) {
+					info += ". Destination folder is empty, migrating data.";
+					Savegames.MigrateData(activity.getApplicationContext());
+				} else {
+					info += ". Destination folder is not empty, no migration.";
+				}
+			} else {
+				info = "No rw permission on external folder";
 			}
-			if (activity.getApplicationContext().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-				activity.requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_REQUEST);
-			}
+			final Dialog d = CustomDialogFactory.createDialog(activity,
+					"Info",
+					activity.getResources().getDrawable(android.R.drawable.ic_delete),
+					info,
+					null,
+					true);
+			CustomDialogFactory.addDismissButton(d, android.R.string.ok);
+			CustomDialogFactory.show(d);
+
 		}
 	}
 
